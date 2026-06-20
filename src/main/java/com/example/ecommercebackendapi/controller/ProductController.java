@@ -4,6 +4,7 @@ import com.example.ecommercebackendapi.dto.ProductRequestDTO;
 import com.example.ecommercebackendapi.dto.ProductResponseDTO;
 import com.example.ecommercebackendapi.entity.Product;
 import com.example.ecommercebackendapi.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProductController {
         return productService.getProductById(id);
     }
     @PostMapping()
-    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto){
+    public ProductResponseDTO createProduct(@Valid @RequestBody ProductRequestDTO dto){
         return productService.createProduct(dto);
     }
     @PutMapping("/{id}")

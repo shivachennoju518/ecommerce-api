@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EcommercebackendapiApplication {
+public class  EcommercebackendapiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommercebackendapiApplication.class, args);

@@ -2,6 +2,7 @@ package com.example.ecommercebackendapi.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,14 +19,18 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Role role;
-    @OneToOne(mappedBy = "user")
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role=Role.USER;
+
+    @OneToOne(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Cart cart;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Order> order;
 
-//    @Enumerated(EnumType.STRING)
+
 public enum Role{
     USER,
     ADMIN

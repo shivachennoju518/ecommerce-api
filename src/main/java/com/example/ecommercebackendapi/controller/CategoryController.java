@@ -4,6 +4,7 @@ import com.example.ecommercebackendapi.dto.CategoryRequestDTO;
 import com.example.ecommercebackendapi.dto.CategoryResponseDTO;
 import com.example.ecommercebackendapi.entity.Category;
 import com.example.ecommercebackendapi.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public CategoryController(CategoryService categoryService){
 
 }
 @PostMapping()
-    public CategoryResponseDTO createCategory(@RequestBody CategoryRequestDTO dto){
+    public CategoryResponseDTO createCategory(@Valid @RequestBody CategoryRequestDTO dto){
     return categoryService.createCategory(dto);
 }
 @PutMapping("/{id}")

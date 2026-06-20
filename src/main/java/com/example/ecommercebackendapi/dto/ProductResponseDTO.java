@@ -12,6 +12,8 @@ public class ProductResponseDTO {
 
     private int stock;
 
+    private String description;
+
     // safe category info (no full entity)
     private Long categoryId;
 
