@@ -1,26 +1,48 @@
-//package com.example.ecommercebackendapi.config;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.jspecify.annotations.Nullable;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.AuthenticationException;
-//import org.springframework.stereotype.Component;
-//
-//@Component
-//@RequiredArgsConstructor
-//public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
-//
-//    private final UserDetails userDetails;
-//    @Override
-//    public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//        return new UsernamePasswordAuthenticationToken(
-//               userDetails,null,userDetails.getAuthorities()
-//        );
-//    }
-//
-//    @Override
-//    public boolean supports(Class<?> authentication) {
-//        return false;
-//    }
-//}
+package com.example.ecommercebackendapi.config;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+
+@Component
+@RequiredArgsConstructor
+public class AuthenticationProvider
+        implements org.springframework.security.authentication.AuthenticationProvider {
+
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public Authentication authenticate(Authentication authentication)
+            throws AuthenticationException {
+
+        String username = authentication.getName();
+        String password = Objects.requireNonNull(authentication.getCredentials()).toString();
+
+        UserDetails user =
+                userDetailsService.loadUserByUsername(username);
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+
+        return new UsernamePasswordAuthenticationToken(
+                user,
+                null,
+                user.getAuthorities());
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class
+                .isAssignableFrom(authentication);
+    }
+}

@@ -8,6 +8,7 @@ import com.example.ecommercebackendapi.mapper.ProductMapper;
 import com.example.ecommercebackendapi.repository.CategoryRepository;
 import com.example.ecommercebackendapi.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ProductServiceImpl  implements ProductService{
     private final ProductMapper productMapper;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponseDTO createProduct(ProductRequestDTO dto) {
 
         Category category = categoryRepository.findById(dto.getCategoryId())
@@ -35,6 +37,7 @@ public class ProductServiceImpl  implements ProductService{
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ProductResponseDTO> getAllProducts() {
 
         return productRepository.findAll()
@@ -44,6 +47,7 @@ public class ProductServiceImpl  implements ProductService{
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN','USER')")
     public ProductResponseDTO getProductById(Long id) {
 
         Product product = productRepository.findById(id)
@@ -53,6 +57,7 @@ public class ProductServiceImpl  implements ProductService{
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto) {
 
         Product product = productRepository.findById(id)
@@ -72,6 +77,7 @@ public class ProductServiceImpl  implements ProductService{
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(Long id) {
 
         productRepository.deleteById(id);

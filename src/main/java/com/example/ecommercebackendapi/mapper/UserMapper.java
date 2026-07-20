@@ -3,15 +3,20 @@ package com.example.ecommercebackendapi.mapper;
 import com.example.ecommercebackendapi.dto.UserRegisterDTO;
 import com.example.ecommercebackendapi.dto.UserResponseDTO;
 import com.example.ecommercebackendapi.entity.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
+
+    private final PasswordEncoder passwordEncoder;
     public User toEntity(UserRegisterDTO dto){
         User user=new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         return user;
 
     }
