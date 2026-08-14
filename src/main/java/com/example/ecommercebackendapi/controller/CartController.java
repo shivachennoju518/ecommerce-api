@@ -5,6 +5,7 @@ import com.example.ecommercebackendapi.dto.CartResponseDTO;
 import com.example.ecommercebackendapi.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,13 +17,17 @@ public class CartController {
 
 
 
-    @GetMapping("/{userId}")
+//    @GetMapping("/{userId}")
+    @GetMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN',USER)")
     public CartResponseDTO getCartById(@PathVariable  Long userId){
         return cartService.getCartByUserId(userId);
     }
 
     // Add Product to Cart
-    @PostMapping("/{userId}/add")
+//    @PostMapping("/{userId}/add")
+    @PostMapping("/add")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CartResponseDTO addProductToCart(
             @PathVariable Long userId,
             @Valid @RequestBody AddToCartDTO dto) {
@@ -35,7 +40,9 @@ public class CartController {
     }
 
     // Remove Product from Cart
-    @DeleteMapping("/{userId}/remove/{productId}")
+//    @DeleteMapping("/{userId}/remove/{productId}")
+    @DeleteMapping("/remove/{productId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CartResponseDTO removeProductFromCart(
             @PathVariable Long userId,
             @PathVariable Long productId) {
@@ -47,7 +54,9 @@ public class CartController {
     }
 
     // Clear Cart
-    @DeleteMapping("/{userId}/clear")
+//    @DeleteMapping("/{userId}/clear")
+    @DeleteMapping("/clear")
+    @PreAuthorize("hasRole('ADMIN')")
     public String clearCart(@PathVariable Long userId) {
 
         cartService.clearCart(userId);
